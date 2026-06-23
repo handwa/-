@@ -70,25 +70,39 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
-
+    //新增员工
     @PostMapping
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
         log.info("新增员工，员工数据：{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
     }
+    //分页查询
     @GetMapping("/page")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
         log.info("员工分页查询");
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
-
+    //修改员工状态
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status,Long id) {
         log.info("员工状态：{}", status);
         log.info("员工id：{}", id);
         return employeeService.startOrStop(status, id);
+    }
+    //员工信息查询
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("员工id：{}", id);
+        return employeeService.getById(id);
+    }
+    //员工信息修改
+    @PutMapping
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("员工信息修改：{}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
     }
 
 }
